@@ -22,20 +22,23 @@ export default function RightWrongChart() {
     });
 
     return (
-        <div>
-            <Pie
-                data={chartData}
-                options={{
-                    plugins: {
-                        legend: {
-                            position: "bottom",
-                            labels: {
-                                color: "#12223c"
+        <div className="col-lg-4 text-center mb-5 ">
+            <h5 className="mb-4">Right/Wrong Pie Chart</h5>
+            <div className="px-5 pie-chart">
+                <Pie
+                    data={chartData}
+                    options={{
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+                                labels: {
+                                    color: "#12223c"
+                                }
                             }
                         }
-                    }
-                }}
-            />
+                    }}
+                />
+            </div>
         </div>
     );
 }

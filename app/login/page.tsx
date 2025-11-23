@@ -3,6 +3,8 @@ import { Button, Modal } from 'react-bootstrap';
 import React, { useEffect } from "react";
 import styles from "./styles.module.css"
 import Link from 'next/link';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
 
 export default function Login() {
     return (
@@ -23,41 +25,10 @@ export default function Login() {
                         </ul>
                         <div className="tab-content">
                             <div className="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                                <form>
-                                    <div className="form-outline mb-4">
-                                        <label className="form-label" htmlFor="loginName">Username</label>
-                                        <input type="email" id="loginName" className="form-control" />
-                                    </div>
-
-                                    <div className="form-outline mb-4">
-                                        <label className="form-label" htmlFor="loginPassword">Password</label>
-                                        <input type="password" id="loginPassword" className="form-control" />
-                                    </div>
-                                    <Link className="btn btn-primary btn-block mb-4" href="/">
-                                        Sign in
-                                    </Link>
-                                    {/* <button type="submit" className="btn btn-primary btn-block mb-4">Sign in</button> */}
-                                </form>
+                                <LoginForm />
                             </div>
                             <div className="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                                <form>
-                                    <div className="form-outline mb-4">
-                                        <label className="form-label" htmlFor="registerUsername">Username</label>
-                                        <input type="text" id="registerUsername" className="form-control" />
-                                    </div>
-
-                                    <div className="form-outline mb-4">
-                                        <label className="form-label" htmlFor="registerPassword">Password</label>
-                                        <input type="password" id="registerPassword" className="form-control" />
-                                    </div>
-
-                                    <div className="form-outline mb-4">
-                                        <label className="form-label" htmlFor="registerRepeatPassword">Repeat password</label>
-                                        <input type="password" id="registerRepeatPassword" className="form-control" />
-                                    </div>
-
-                                    <button type="submit" className="btn btn-primary btn-block mb-3">Sign in</button>
-                                </form>
+                                <RegistrationForm />
                             </div>
                         </div>
                     </div>
