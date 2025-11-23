@@ -90,3 +90,7 @@ h5,
     padding-left: 1rem !important;
   }
 }
+
+.hidden {
+  display: none;
+}
