@@ -1,0 +1,92 @@
+:root {
+  --background-color: #ffffff;
+  --font-color: #12223c;
+  --palette-1: #104a7d;
+  --palette-2: #45a9ff;
+  --palette-3: #f6d76b;
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+/*important is needed to override the bootstrap defaults*/
+.btn-primary {
+  background-color: var(--palette-1);
+  color: var(--background-color);
+  box-shadow: var(--bs-box-shadow) !important;
+  border-color: var(--palette-1) !important;
+}
+
+a.nav-link.nav-link-primary {
+  color: var(--font-color) !important;
+}
+
+.nav-link.nav-link-primary.active {
+  background-color: var(--palette-1);
+  color: var(--background-color) !important;
+
+}
+
+.btn-primary:hover {
+  background-color: var(--palette-1);
+  border-color: var(--palette-1) !important;
+  background-image: linear-gradient(to left, var(--palette-1), var(--font-color));
+}
+
+body,
+h5,
+.card-title,
+.text-body-secondary,
+.list-group-item,
+.table td,
+.table th {
+  color: var(--font-color) !important;
+}
+
+.bg-body-tertiary {
+  background-color: var(--background-color) !important;
+}
+
+.btn-xlg {
+  --bs-btn-padding-y: 1rem;
+  --bs-btn-padding-x: 1rem;
+  --bs-btn-font-size: 3rem;
+  --bs-btn-border-radius: var(--bs-border-radius-lg);
+}
+
+.card {
+  min-height: 310px;
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.card.hidden {
+  opacity: 0;
+}
+
+.card .list-group-item {
+  border: 0px;
+  font-size: 1.5rem;
+  color: var(--bs-card-title-color);
+  cursor: pointer;
+}
+
+.list-group-item {
+  border-radius: 0 !important;
+
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  .pie-chart {
+    padding-right: 6rem !important;
+    padding-left: 6rem !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .pie-chart {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+  }
+}
