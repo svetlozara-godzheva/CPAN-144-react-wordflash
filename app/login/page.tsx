@@ -3,8 +3,8 @@ import { Button, Modal } from 'react-bootstrap';
 import React, { useEffect } from "react";
 import styles from "./styles.module.css"
 import Link from 'next/link';
-import LoginForm from './components/LoginForm';
-import RegistrationForm from './components/RegistrationForm';
+import LoginForm from "./components/LoginForm";
+import RegistrationForm from "./components/RegistrationForm";
 
 export default function Login() {
     return (
@@ -36,6 +36,5 @@ export default function Login() {
                 <div className="col-lg-4"></div>
             </div>
         </div>
-
     );
 }

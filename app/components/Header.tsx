@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 
-
 const hiddenRoutes = ["/wordflash"];
 
 export default function Header() {
