@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import USERS, { sessionOptions } from "../auth";
+import { sessionOptions } from "../auth";
 import { getIronSession } from "iron-session";
+import USERS from "../auth";
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,34 +14,28 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (!USERS[body.username]) {
+        if (USERS[body.username]) {
             return NextResponse.json(
-                { error: "Invalid username or password" },
-                { status: 401 }
+                { error: "Username already exists" },
+                { status: 400 }
             );
         }
 
-        let user = USERS[body.username];
+        USERS[body.username] = {
+            username: body.username,
+            password: body.password
+        };
 
-        if (body.password != user.password) {
-            return NextResponse.json(
-                { error: "Invalid username or password" },
-                { status: 401 }
-            );
-        }
+        console.log(USERS);
 
         let response = NextResponse.json({
             success: true
         });
 
-        const session = await getIronSession<any>(request, response, sessionOptions);
-        session.user = { name: user.username };
-        await session.save();
-
         return response;
 
     } catch (error) {
-        console.error("Login error:", error);
+        console.error("Registration error:", error);
         return NextResponse.json(
             { error: "Internal server error" },
             { status: 500 }

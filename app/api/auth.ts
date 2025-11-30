@@ -7,3 +7,5 @@ export const sessionOptions: SessionOptions = {
         secure: true,
     }
 };
+const USERS: any = {};
+export default USERS;
