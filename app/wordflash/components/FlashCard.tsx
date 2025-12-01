@@ -6,6 +6,11 @@ type FlashCardProps = {
 }
 
 export default function FlashCard({ word, isVisible }: FlashCardProps) {
+
+    if (!word) {
+        return null;
+    }
+
     return (
         <div className={`card shadow rounded ${!isVisible ? "transparent" : ""}`} id="card-container">
             <div className="card-body py-5 px-5" id="card">

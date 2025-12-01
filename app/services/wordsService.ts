@@ -42,3 +42,63 @@ export async function delay(interval: number) {
     });
     return result;
 }
+
+export function createQuestions(words: any[]) {
+    let questions = [];
+    for (const word of words) {
+
+        let resolveAnswer: any;
+        const promise = new Promise<any>((resolve) => {
+            resolveAnswer = resolve;
+        });
+
+        let question = {
+            word: word.word,
+            translation: word.translation,
+            suggestions: createSuggestions(word, words),
+            getAnswer: () => promise,
+            answer: null,
+            setAnswer: (value: any) => {
+                resolveAnswer(value);
+            }
+        };
+        questions.push(question);
+    }
+    return questions;
+}
+
+export function createSuggestions(word: any, words: any[]) {
+
+    let wordsPool = words.filter((x) => x.word != word.word);
+    let randomWords = selectWords(wordsPool, 3);
+    let result = []
+    for (const randomWord of randomWords) {
+        result.push(randomWord.translation);
+    }
+    result.push(word.translation);
+    return result.sort(() => Math.random() - 0.5);
+}
+
+export function collectResults(results: any[], quizTime: number) {
+    let wrongAnswers = results.filter((x) => x.answer != x.translation);
+    let rightAnswers = results.filter((x) => x.answer === x.translation);
+    //localStorage.setItem("wrong-answers", JSON.stringify(wrongAnswers));
+    addQuizTime(quizTime);
+    increaseStatistic("wrong-answers-count", wrongAnswers.length);
+    increaseStatistic("right-answers-count", rightAnswers.length);
+}
+
+function increaseStatistic(key: string, count: number) {
+    //call api
+}
+
+function addQuizTime(quizTime: number) {
+    let localStorageTimes = localStorage.getItem("quiz-times");
+    if (localStorageTimes) {
+        let times = JSON.parse(localStorageTimes);
+        times.push(quizTime);
+        //localStorage.setItem("quiz-times", JSON.stringify(times));
+    } else {
+        //localStorage.setItem("quiz-times", JSON.stringify([quizTime]));
+    }
+}

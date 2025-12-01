@@ -72,6 +72,10 @@ h5,
   cursor: pointer;
 }
 
+.list-group-item-action:not(:hover):focus {
+  background-color: unset !important;
+}
+
 .list-group-item {
   border-radius: 0 !important;
 

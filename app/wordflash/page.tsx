@@ -3,23 +3,33 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import FlashCard from "./components/FlashCard";
-import { delay, loadWords, selectWords } from "../services/wordsService";
+import { collectResults, createQuestions, delay, loadWords, selectWords } from "../services/wordsService";
+import Question from "./components/Question";
+import Results from "./components/Results";
 
-const wordsCount = 2;
+const wordsCount = 4;
 const selectedLanguage = "se";
-const flashInterval = 5000;
+const flashInterval = 3000;
 const wordAnimationDelay = 500;
+const questionAnimationDelay = 100;
 
 export default function Wordflash() {
 
     const [counter, setCounter] = useState(0);
-    const [currentWord, setCurrentWord] = useState({});
-    const [isVisible, setIsVisible] = useState(false);
+
+    const [currentWord, setCurrentWord] = useState<any>();
+    const [isFlashCardVisible, setIsFlashCardVisible] = useState(false);
+
+    const [currentQuestion, setCurrentQuestion] = useState<any>();
+    const [isQuestionVisible, setIsQuestionVisible] = useState(false);
+
+    const [results, setResults] = useState<any>();
 
     async function loadLearningStage() {
         let words = await loadWords(selectedLanguage);
         let learningStageWords = selectWords(words, wordsCount);
         await flashWords(learningStageWords);
+        await startQuiz(learningStageWords);
     }
 
     async function flashWords(words: any[]) {
@@ -28,15 +38,51 @@ export default function Wordflash() {
         while (wordsToFlash.length > 0) {
             count++;
 
-            setIsVisible(false);
+            setIsFlashCardVisible(false);
             await delay(wordAnimationDelay);
             setCurrentWord(wordsToFlash.pop())
             setCounter(count);
-            setIsVisible(true);
+            setIsFlashCardVisible(true);
             // to read the card
             await delay(flashInterval);
-
         }
+    }
+
+    async function startQuiz(words: any[]) {
+        setCurrentWord(null);
+        setCounter(0);
+        await delay(questionAnimationDelay);
+        let quizQuestions = createQuestions(words);
+        let answeredQuestions = [];
+        let counter = 0;
+        let startTime = new Date();
+        while (quizQuestions.length != 0) {
+            counter++;
+            let question = quizQuestions.pop();
+            setIsQuestionVisible(false);
+            await delay(questionAnimationDelay);
+            setCurrentQuestion(question);
+            setCounter(counter);
+            setIsQuestionVisible(true);
+            //wait for the question to be resolved
+            question!.answer = await question?.getAnswer();
+            answeredQuestions.push(question);
+        }
+        setCurrentQuestion(null);
+        setCounter(0);
+        let endTime = new Date();
+        let quizTime = (endTime.getTime() - startTime.getTime()) / 1000;
+
+        collectResults(answeredQuestions, quizTime);
+        setResults({
+            answeredQuestions: answeredQuestions,
+            callback: () => {
+                setResults(null);
+                flashWords(words).then(() => {
+                    startQuiz(words);
+                });
+            }
+        });
     }
 
     useEffect(() => {
@@ -59,7 +105,9 @@ export default function Wordflash() {
             <div className="container mt-5 ">
                 <div className="row">
                     <div className="col-sm-12 col-md-12 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
-                        <FlashCard word={currentWord} isVisible={isVisible} />
+                        <FlashCard word={currentWord} isVisible={isFlashCardVisible} />
+                        <Question question={currentQuestion} isVisible={isQuestionVisible} />
+                        <Results results={results} />
                     </div>
                 </div>
                 <div className="row mt-5">
